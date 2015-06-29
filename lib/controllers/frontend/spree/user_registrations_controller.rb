@@ -26,6 +26,7 @@ class Spree::UserRegistrationsController < Devise::RegistrationsController
         sign_up(resource_name, resource)
         session[:spree_user_signup] = true
         associate_user
+        after_create_operations
         respond_with resource, location: after_sign_up_path_for(resource)
       else
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}"
@@ -70,5 +71,8 @@ class Spree::UserRegistrationsController < Devise::RegistrationsController
   private
     def spree_user_params
       params.require(:spree_user).permit(Spree::PermittedAttributes.user_attributes)
+    end
+
+    def after_create_operations
     end
 end
